@@ -34,6 +34,10 @@ Thank you, Chris!
       param.setTargetAtTime = param.setTargetValueAtTime;
   }
 
+  if(window.hasOwnProperty('webkitAudioContext') && 
+    !window.hasOwnProperty('AudioContext')) {
+        window.AudioContext = webkitAudioContext;
+    }
   if (window.hasOwnProperty('webkitAudioContext') &&
       !window.hasOwnProperty('AudioContext')) {
     window.AudioContext = webkitAudioContext;
