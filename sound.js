@@ -241,6 +241,10 @@ var sounds = {
     //refer to it in the `forEach` loop ahead.
     var self = this;
 
+    //Get a reference to this asset object so we can
+    //refer to it in the `forEach` loop ahead.
+    var self = this;
+
     //Find the number of files that need to be loaded.
     self.toLoad = sources.length;
     sources.forEach(function(source){
