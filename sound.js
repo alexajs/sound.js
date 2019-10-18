@@ -34,6 +34,10 @@ Thank you, Chris!
       param.setTargetAtTime = param.setTargetValueAtTime;
   }
 
+  if(window.hasOwnProperty('webkitAudioContext') && 
+    !window.hasOwnProperty('AudioContext')) {
+        window.AudioContext = webkitAudioContext;
+    }
   if (window.hasOwnProperty('webkitAudioContext') &&
       !window.hasOwnProperty('AudioContext')) {
     window.AudioContext = webkitAudioContext;
@@ -54,7 +58,12 @@ Thank you, Chris!
       fixSetTarget(node.gain);
       return node;
     };
-
+   AudioContext.prototype.internal_createGain = AudioContext.prototype.createGain;
+    AudioContext.prototype.createGain = function() {
+      var node = this.internal_createGain();
+      fixSetTarget(node.gain);
+      return node;
+    };
     AudioContext.prototype.internal_createDelay = AudioContext.prototype.createDelay;
     AudioContext.prototype.createDelay = function(maxDelayTime) {
       var node = maxDelayTime ? this.internal_createDelay(maxDelayTime) : this.internal_createDelay();
@@ -81,6 +90,14 @@ Thank you, Chris!
             node.internal_start( when || 0, offset || 0 );
         };
       }
+            } else {
+        node.internal_start = node.start;
+        node.start = function( when, offset, duration ) {
+          if( typeof duration !== 'undefined' )
+            node.internal_start( when || 0, offset, duration );
+          else
+            node.internal_start( when || 0, offset || 0 );
+        };
       if (!node.stop) {
         node.stop = function ( when ) {
           this.noteOff( when || 0 );
