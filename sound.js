@@ -24,6 +24,7 @@ Thank you, Chris!
 
 */
 //make my change
+// making a change
 
 (function (global, exports, perf) {
   'use strict';
